@@ -1,11 +1,14 @@
-// Load JSON data //
+// Step 1 //
 
+// Load JSON data //
 const fs = require('fs');
 const data = fs.readFileSync("NEOWISE_Dataset.json", "utf8");
 
 // Parse JSON data into objects
 const neoData = JSON.parse(data);
 Step 2: Basic functions
+
+// Step 2 //
 
 // Retrieve NEO information //
 function getNeoInfo(index) {
@@ -37,6 +40,8 @@ function displayNeoByCriteria(criteria) {
     console.table(filteredNeos);
 }
 
+// Step 3 //
+
 // Maximum, minimum, and average values for NEO orbits
 function measureOrbitValues() {
     const orbitValues = neoData.map(neo => neo.period_yr); // Assuming you want to measure the period_yr property
@@ -51,6 +56,8 @@ function determineNeoCharacteristics(classType) {
     const neoCharacteristics = neoData.filter(neo => neo.orbit_class === classType || (neo.pha && neo.orbit_class === classType));
     return neoCharacteristics;
 }
+
+// Step 4 //
 
 // Rearrange NEO data into JSON output
 function rearrangeNeoData() {
@@ -71,7 +78,7 @@ function exportNeoData() {
     fs.writeFileSync("Rearranged_NEO_Data.json", jsonRearrangedData);
 }
 
-// Jest unit tests
+// Step 5 //
 
 // Test getNeoInfo
 test('Retrieve NEO information by index', () => {
