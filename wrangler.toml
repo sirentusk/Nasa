@@ -1,1 +1,38 @@
 compatibility_flags = [ "nodejs_compat" ]
+wrangler publish
+
+# File for Cloudflare Workers
+
+name = "neowise-data-handler"
+type = "javascript"
+account_id = "97afc6815240a28494592018118777f4"
+compatibility_flags = ["nodejs_compat"]
+
+# KV Namespace Binding
+kv_namespaces = [
+  { binding = "Space", id = "615af36f52c649699fcfbd728013fc05" }
+]
+
+# Define environment-specific variables for production (adjust as needed)
+[env.production]
+name = "neowise-data-handler-prod"
+zone_id = "your-production-zone-id"
+route = "yourdomain.com/*"
+
+# Environment variables for production (adjust or remove if not needed)
+vars = {
+  # Example: API_URL = "https://api.example.com"
+  # Add any environment variables your project needs
+}
+
+# Define environment-specific variables for development (adjust as needed)
+[env.development]
+name = "neowise-data-handler-dev"
+zone_id = "your-development-zone-id"
+route = "dev.yourdomain.com/*"
+
+# Environment variables for development (adjust or remove if not needed)
+vars = {
+  # Example: API_URL = "https://api.example.com"
+  # Add any environment variables your project needs
+}
