@@ -1,38 +1,79 @@
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
+// Load JSON data //
 
-async function handleRequest(request) {
-  // URL to your NEOWISE_Dataset.json on GitHub
-  const datasetUrl = 'https://raw.githubusercontent.com/yourusername/yourrepository/main/NEOWISE_Dataset.json';
+const fs = require('fs');
+const data = fs.readFileSync("NEOWISE_Dataset.json", "utf8");
 
-  // Fetch the dataset
-  const response = await fetch(datasetUrl);
-  const data = await response.json();
+// Parse JSON data into objects
+const neoData = JSON.parse(data);
+Step 2: Basic functions
 
-  // Process the data as needed
-  // For example, return the data or a part of it as a response
-  return new Response(JSON.stringify(data), {
-    headers: { 'content-type': 'application/json;charset=UTF-8' },
-  });
+// Retrieve NEO information //
+function getNeoInfo(index) {
+    return neoData[index];
 }
 
-
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
-
-async function handleRequest(request) {
-  // Retrieve a value from KV
-  const value = await Space.get("someKey");
-  
-  // Check if the value exists
-  if (value === null) {
-    return new Response("Key not found", { status: 404 });
-  }
-
-  // Respond with the value
-  return new Response(value, {
-    headers: { 'content-type': 'text/plain' },
-  });
+// Retrieve NEO information based on specific property
+function getNeoByProperty(property, value) {
+    return neoData.filter(neo => neo[property] === value);
 }
+
+// Display NEO information
+function displayNeoInfo(index) {
+    const neo = getNeoInfo(index);
+    console.table(neo);
+}
+
+// Display information on all NEOs
+function displayAllNeoInfo() {
+    console.table(neoData);
+}
+
+// Display information on NEOs that meet criteria
+function displayNeoByCriteria(criteria) {
+    const filteredNeos = neoData.filter(neo => {
+        // Add your filtering criteria here
+        // Example: return neo.class === criteria;
+    });
+    console.table(filteredNeos);
+}
+
+// Measure maximum, minimum, and average values for NEO orbits
+function measureOrbitValues() {
+    // Add your logic here
+}
+
+// Determine NEO characteristics based on class or PHA
+function determineNeoCharacteristics(classType) {
+    // Add your logic here
+}
+
+// Rearrange NEO data into JSON output
+function rearrangeNeoData() {
+    // Add your logic here
+}
+
+// Export rearranged data
+function exportNeoData() {
+    const rearrangedData = rearrangeNeoData();
+    const jsonRearrangedData = JSON.stringify(rearrangedData);
+    fs.writeFileSync("Rearranged_NEO_Data.json", jsonRearrangedData);
+}
+
+// Jest unit tests
+
+// Test getNeoInfo
+test('Retrieve NEO information by index', () => {
+    expect(getNeoInfo(0)).toEqual(neoData[0]);
+});
+
+// Test getNeoByProperty
+test('Retrieve NEO information by property', () => {
+    expect(getNeoByProperty('class', 'Aten')).toHaveLength(1);
+});
+
+// Test displayNeoInfo
+test('Display NEO information', () => {
+    const consoleSpy = jest.spyOn(console, 'table');
+    displayNeoInfo(0);
+    expect(consoleSpy).toHaveBeenCalled();
+});
