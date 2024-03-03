@@ -16,3 +16,23 @@ async function handleRequest(request) {
     headers: { 'content-type': 'application/json;charset=UTF-8' },
   });
 }
+
+
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request))
+})
+
+async function handleRequest(request) {
+  // Retrieve a value from KV
+  const value = await Space.get("someKey");
+  
+  // Check if the value exists
+  if (value === null) {
+    return new Response("Key not found", { status: 404 });
+  }
+
+  // Respond with the value
+  return new Response(value, {
+    headers: { 'content-type': 'text/plain' },
+  });
+}
