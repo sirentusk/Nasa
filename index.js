@@ -37,19 +37,31 @@ function displayNeoByCriteria(criteria) {
     console.table(filteredNeos);
 }
 
-// Measure maximum, minimum, and average values for NEO orbits
+// Maximum, minimum, and average values for NEO orbits
 function measureOrbitValues() {
-    // Add your logic here
+    const orbitValues = neoData.map(neo => neo.period_yr); // Assuming you want to measure the period_yr property
+    const maxOrbit = Math.max(...orbitValues);
+    const minOrbit = Math.min(...orbitValues);
+    const avgOrbit = orbitValues.reduce((sum, value) => sum + value, 0) / orbitValues.length;
+    return { maxOrbit, minOrbit, avgOrbit };
 }
 
-// Determine NEO characteristics based on class or PHA
+// NEO characteristics based on class or PHA
 function determineNeoCharacteristics(classType) {
-    // Add your logic here
+    const neoCharacteristics = neoData.filter(neo => neo.orbit_class === classType || (neo.pha && neo.orbit_class === classType));
+    return neoCharacteristics;
 }
 
 // Rearrange NEO data into JSON output
 function rearrangeNeoData() {
-    // Add your logic here
+    const neoClasses = {};
+    neoData.forEach(neo => {
+        if (!neoClasses[neo.orbit_class]) {
+            neoClasses[neo.orbit_class] = [];
+        }
+        neoClasses[neo.orbit_class].push(neo);
+    });
+    return neoClasses;
 }
 
 // Export rearranged data
