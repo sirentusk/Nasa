@@ -75,7 +75,26 @@ function rearrangeNeoData() {
 function exportNeoData() {
     const rearrangedData = rearrangeNeoData();
     const jsonRearrangedData = JSON.stringify(rearrangedData);
-    fs.writeFileSync("Rearranged_NEO_Data.json", jsonRearrangedData);
+    
+    const filename = "Rearranged_NEO_Data.json";
+    
+    if (fs.existsSync(filename)) {
+        const newFilename = generateUniqueFilename(filename);
+        fs.writeFileSync(newFilename, jsonRearrangedData);
+        console.log(`File ${filename} already exists. New data saved as ${newFilename}.`);
+    } else {
+        fs.writeFileSync(filename, jsonRearrangedData);
+        console.log(`Data saved as ${filename}.`);
+    }
+}
+
+// Helper function to generate a unique filename
+function generateUniqueFilename(filename) {
+    const timestamp = Date.now();
+    const parts = filename.split('.');
+    const extension = parts.pop();
+    const baseFilename = parts.join('.');
+    return `${baseFilename}_${timestamp}.${extension}`;
 }
 
 // Step 5 //
